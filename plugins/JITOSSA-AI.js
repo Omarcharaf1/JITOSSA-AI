@@ -1,1 +1,44 @@
-function _0x646c(_0x46633e,_0x266095){const _0x100810=_0x1008();return _0x646c=function(_0x646c7e,_0x372218){_0x646c7e=_0x646c7e-0x149;let _0xc082a7=_0x100810[_0x646c7e];return _0xc082a7;},_0x646c(_0x46633e,_0x266095);}(function(_0x3e0412,_0x4f09f0){const _0x17714a=_0x646c,_0x20a75d=_0x3e0412();while(!![]){try{const _0x2b0622=-parseInt(_0x17714a(0x156))/0x1*(parseInt(_0x17714a(0x14c))/0x2)+parseInt(_0x17714a(0x155))/0x3*(parseInt(_0x17714a(0x161))/0x4)+-parseInt(_0x17714a(0x163))/0x5*(parseInt(_0x17714a(0x153))/0x6)+-parseInt(_0x17714a(0x14f))/0x7*(-parseInt(_0x17714a(0x149))/0x8)+-parseInt(_0x17714a(0x14b))/0x9+parseInt(_0x17714a(0x14e))/0xa+-parseInt(_0x17714a(0x15a))/0xb*(-parseInt(_0x17714a(0x15f))/0xc);if(_0x2b0622===_0x4f09f0)break;else _0x20a75d['push'](_0x20a75d['shift']());}catch(_0x44b9ca){_0x20a75d['push'](_0x20a75d['shift']());}}}(_0x1008,0x71b6d));import _0x210a9a from'axios';function _0x1008(){const _0x39c344=['218206UyMVJT','I\x20am\x20a\x20WhatsApp\x20bot,\x20','16280dKmTnD','826TkIqkz','getName','autoai','reply','6MYtNRw','isBaileys','821661EzDZZI','1MnFAaa','https://api.justifung.tech/api/bard?q=${m.text}&apikey=Nour','post','user','304051rqKwfU','error','sender','answer','https://deepenglish.com/wp-json/ai-chatbot/v1/chat','348oucmKb','text','8aKmHdU','Error\x20fetching\x20data:','4401655ttgBup','11288gtovjc','data','560538dsviBN'];_0x1008=function(){return _0x39c344;};return _0x1008();}let handler=async(_0xa618f8,{conn:_0x5292c3})=>{const _0x5b2dfd=_0x646c;_0x5292c3['autoai']=_0x5292c3[_0x5b2dfd(0x151)]?_0x5292c3['autoai']:{};if(!_0xa618f8['text']||_0xa618f8[_0x5b2dfd(0x154)])return;let _0x27478f=_0x5292c3[_0x5b2dfd(0x150)](_0xa618f8[_0x5b2dfd(0x15c)]);const _0x26fbf0=[{'role':'system','content':_0x5b2dfd(0x14d)+_0x27478f},{'role':_0x5b2dfd(0x159),'content':_0xa618f8[_0x5b2dfd(0x160)]}];try{const _0x5f1701=await _0x210a9a['post'](_0x5b2dfd(0x157),{'messages':_0x26fbf0}),_0x3e7fa4=_0x5f1701[_0x5b2dfd(0x14a)],_0x436d2f=_0x3e7fa4;_0xa618f8['reply'](_0x436d2f[_0x5b2dfd(0x15d)]);}catch(_0x5ce180){console[_0x5b2dfd(0x15b)](_0x5b2dfd(0x162),_0x5ce180);throw _0x5ce180;}};handler['before']=async(_0x524484,{conn:_0xe27abe})=>{const _0x591974=_0x646c;if(!_0x524484[_0x591974(0x160)]||_0x524484[_0x591974(0x154)])return;let _0x51ec3f=_0xe27abe[_0x591974(0x150)](_0x524484[_0x591974(0x15c)]);const _0x223d4c=[{'role':'system','content':_0x591974(0x14d)+_0x51ec3f},{'role':'user','content':_0x524484[_0x591974(0x160)]}];try{const _0x41526b=await _0x210a9a[_0x591974(0x158)](_0x591974(0x15e),{'messages':_0x223d4c}),_0x2cb26e=_0x41526b[_0x591974(0x14a)],_0x1128fb=_0x2cb26e;_0x524484[_0x591974(0x152)](_0x1128fb[_0x591974(0x15d)]);}catch(_0x49b9b8){console['error'](_0x591974(0x162),_0x49b9b8);throw _0x49b9b8;}};export default handler;
+import axios from 'axios';
+
+let handler = async (m, { conn }) => {
+    conn.autoai = conn.autoai ? conn.autoai : {};
+
+    if (!m.text || m.isBaileys || hasLinks(m.text)) return; // التحقق من وجود روابط
+
+    let name = conn.getName(m.sender);
+    await conn.sendMessage(m.chat, `I am a WhatsApp bot, ${name}`);
+
+    const messages = [
+        { role: "system", content: `I am a WhatsApp bot, ${name}` },
+        { role: "user", content: m.text }
+    ];
+
+    try {
+        const response = await axios.post("https://deepenglish.com/wp-json/ai-chatbot/v1/chat", {
+            messages
+        });
+        const responseData = response.data;
+        const hasil = responseData;
+        await conn.sendMessage(m.chat, `Chatbot: ${hasil.answer}`);
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        throw error;
+    }
+}
+
+// الدالة للتحقق من وجود روابط
+function hasLinks(text) {
+    // يمكنك استخدام تعبيرات الاختبار النمطي للتحقق من وجود روابط
+    const linkPattern = /https?:\/\/\S+/i;
+    return linkPattern.test(text);
+}
+
+handler.before = async (m, { conn }) => {
+    // لا تنفذ أي شيء قبل وصول الرسالة
+}
+
+handler.command = ['autoai'];
+handler.tags = ["ai"]
+handler.help = ['autoai']
+
+export default handler;
