@@ -1,1 +1,54 @@
-const _0x27a03b=_0x2d8d;function _0x2d8d(_0x5a072c,_0x13ddd2){const _0xade061=_0xade0();return _0x2d8d=function(_0x2d8ddb,_0x362455){_0x2d8ddb=_0x2d8ddb-0x162;let _0x2b9cf7=_0xade061[_0x2d8ddb];return _0x2b9cf7;},_0x2d8d(_0x5a072c,_0x13ddd2);}(function(_0x2d3202,_0x53af2b){const _0x25d2f9=_0x2d8d,_0x4f895c=_0x2d3202();while(!![]){try{const _0x3a9a11=-parseInt(_0x25d2f9(0x175))/0x1*(-parseInt(_0x25d2f9(0x167))/0x2)+parseInt(_0x25d2f9(0x17b))/0x3+parseInt(_0x25d2f9(0x16e))/0x4*(parseInt(_0x25d2f9(0x178))/0x5)+parseInt(_0x25d2f9(0x163))/0x6*(-parseInt(_0x25d2f9(0x173))/0x7)+-parseInt(_0x25d2f9(0x16b))/0x8*(-parseInt(_0x25d2f9(0x170))/0x9)+parseInt(_0x25d2f9(0x16c))/0xa*(-parseInt(_0x25d2f9(0x16d))/0xb)+-parseInt(_0x25d2f9(0x172))/0xc;if(_0x3a9a11===_0x53af2b)break;else _0x4f895c['push'](_0x4f895c['shift']());}catch(_0x213ef4){_0x4f895c['push'](_0x4f895c['shift']());}}}(_0xade0,0x60649));import _0x1ff4f0 from'axios';let handler=async(_0x5dbc5b,{conn:_0x323da5})=>{const _0x21e0d6=_0x2d8d;_0x323da5[_0x21e0d6(0x16f)]=_0x323da5['autoai']?_0x323da5[_0x21e0d6(0x16f)]:{};if(!_0x5dbc5b[_0x21e0d6(0x171)]||_0x5dbc5b['isBaileys']||_0x5dbc5b[_0x21e0d6(0x171)][_0x21e0d6(0x168)](_0x21e0d6(0x177))||_0x5dbc5b[_0x21e0d6(0x171)][_0x21e0d6(0x168)](_0x21e0d6(0x166)))return;let _0x416e8e='JITOSSA\x20AI';const _0x18d523=[{'role':_0x21e0d6(0x17c),'content':_0x21e0d6(0x164)+_0x416e8e},{'role':_0x21e0d6(0x16a),'content':_0x5dbc5b[_0x21e0d6(0x171)]}];try{const _0x1021a9=await _0x1ff4f0[_0x21e0d6(0x17e)](_0x21e0d6(0x179),{'messages':_0x18d523}),_0x5071e9=_0x1021a9['data'],_0x5bbffc=_0x5071e9;_0x5dbc5b[_0x21e0d6(0x17a)](_0x5bbffc[_0x21e0d6(0x17d)]);}catch(_0x4d2978){console[_0x21e0d6(0x165)](_0x21e0d6(0x162),_0x4d2978);throw _0x4d2978;}};handler[_0x27a03b(0x176)]=async(_0x164c2f,{conn:_0x33d43a})=>{const _0x4356da=_0x27a03b;_0x33d43a[_0x4356da(0x16f)]=_0x33d43a['autoai']?_0x33d43a[_0x4356da(0x16f)]:{};if(!_0x164c2f['text']||_0x164c2f[_0x4356da(0x174)]||_0x164c2f['text']['includes']('http://')||_0x164c2f[_0x4356da(0x171)][_0x4356da(0x168)](_0x4356da(0x166)))return;let _0x460894=_0x4356da(0x169);const _0x10acee=[{'role':_0x4356da(0x17c),'content':_0x4356da(0x164)+_0x460894},{'role':_0x4356da(0x16a),'content':_0x164c2f[_0x4356da(0x171)]}];try{const _0x5267be=await _0x1ff4f0[_0x4356da(0x17e)](_0x4356da(0x179),{'messages':_0x10acee}),_0x95cc7e=_0x5267be['data'],_0x3cbd72=_0x95cc7e;_0x164c2f[_0x4356da(0x17a)](_0x3cbd72[_0x4356da(0x17d)]);}catch(_0x96f2be){console[_0x4356da(0x165)](_0x4356da(0x162),_0x96f2be);throw _0x96f2be;}};export default handler;function _0xade0(){const _0x4f5452=['88oxCAUw','autoai','2442447VpDXbR','text','12170196OAalus','49qnNpDa','isBaileys','31hhyzAM','before','http://','173735aLdRbA','https://deepenglish.com/wp-json/ai-chatbot/v1/chat','reply','1856379RenWuJ','system','answer','post','حدث\x20خطأ\x20أثناء\x20جلب\x20البيانات:','387984nbVUOO','أنا\x20بوت\x20واتساب،\x20اسمي\x20','error','https://','17054CXakdz','includes','JITOSSA\x20AI','user','8pEYpCX','44070aoWeiU','143HBUEwU'];_0xade0=function(){return _0x4f5452;};return _0xade0();}
+import OpenAI from 'openai';
+
+// Replace 'you' with your actual OpenAI API key
+const openai = new OpenAI('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');
+
+let handler = async (m, { conn }) => {
+    // تجاهل الرسائل الفارغة أو التي تحتوي على روابط
+    if (!m.text || m.isBaileys || m.text.includes("http://") || m.text.includes("https://")) return;
+
+    let name = "JITOSSA AI";
+    const messages = [
+        { role: "system", content: `أنا بوت واتساب، اسمي ${name}` },
+        { role: "user", content: m.text }
+    ];
+
+    try {
+        const response = await openai.complete({
+            engine: 'text-davinci-003', // GPT-3.5 engine
+            prompt: messages.map(msg => `${msg.role}: ${msg.content}`).join('\n'),
+            maxTokens: 150
+        });
+        const hasil = response.data.choices[0].text.trim();
+        m.reply(hasil);
+    } catch (error) {
+        console.error("حدث خطأ أثناء جلب البيانات:", error);
+        throw error;
+    }
+}
+
+handler.before = async (m, { conn }) => {
+    // تجاهل الرسائل الفارغة أو التي تحتوي على روابط
+    if (!m.text || m.isBaileys || m.text.includes("http://") || m.text.includes("https://")) return;
+
+    let name = "JITOSSA AI";
+    const messages = [
+        { role: "system", content: `أنا بوت واتساب، اسمي ${name}` },
+        { role: "user", content: m.text }
+    ];
+
+    try {
+        const response = await openai.complete({
+            engine: 'text-davinci-003', // GPT-3.5 engine
+            prompt: messages.map(msg => `${msg.role}: ${msg.content}`).join('\n'),
+            maxTokens: 150
+        });
+        const hasil = response.data.choices[0].text.trim();
+        m.reply(hasil);
+    } catch (error) {
+        console.error("حدث خطأ أثناء جلب البيانات:", error);
+        throw error;
+    }
+}
+
+export default handler;
