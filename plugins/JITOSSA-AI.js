@@ -16,41 +16,25 @@ let handler = async (m, { conn }) => {
 
         await conn.sendMessage(m.chat, { text: `مرحبًا بك في JITOSSA AI، أنا هنا لمساعدتك. يرجى كتابة رسالتك للبدء في المحادثة.` });
 
-        const messages = [
-            { role: "system", content: `أنا بوت واتساب، اسمي ${name}` },
-            { role: "user", content: m.text }
-        ];
+        return; // توقف عن تنفيذ الكود للمرة الأولى
+    }
 
-        try {
-            const response = await axios.post("https://deepenglish.com/wp-json/ai-chatbot/v1/chat", {
-                messages
-            });
-            const responseData = response.data;
-            const hasil = responseData;
-            await conn.sendMessage(m.chat, { react: { text: `✅`, key: m.key }});
-            m.reply(hasil.answer);
-        } catch (error) {
-            console.error("حدث خطأ أثناء جلب البيانات:", error);
-            throw error;
-        }
-    } else {
-        // رد تلقائي للرسائل العادية
-        const messages = [
-            { role: "user", content: m.text }
-        ];
+    // الرد تلقائيًا على الرسائل العادية
+    const messages = [
+        { role: "user", content: m.text }
+    ];
 
-        try {
-            const response = await axios.post("https://deepenglish.com/wp-json/ai-chatbot/v1/chat", {
-                messages
-            });
-            const responseData = response.data;
-            const hasil = responseData;
-            await conn.sendMessage(m.chat, { react: { text: `✅`, key: m.key }});
-            m.reply(hasil.answer);
-        } catch (error) {
-            console.error("حدث خطأ أثناء جلب البيانات:", error);
-            throw error;
-        }
+    try {
+        const response = await axios.post("https://deepenglish.com/wp-json/ai-chatbot/v1/chat", {
+            messages
+        });
+        const responseData = response.data;
+        const hasil = responseData;
+        await conn.sendMessage(m.chat, { react: { text: `✅`, key: m.key }});
+        m.reply(hasil.answer);
+    } catch (error) {
+        console.error("حدث خطأ أثناء جلب البيانات:", error);
+        throw error;
     }
 }
 
