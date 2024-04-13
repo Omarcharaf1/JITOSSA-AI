@@ -13,7 +13,7 @@ let handler = async (m, { conn }) => {
 
     if (containsBannedWords(m.text, bannedWords)) return;
 
-    await conn.sendMessage(m.chat, autoReplyMessage);
+    await conn.sendMessage(m.chat, { text: autoReplyMessage });
 
     const messages = [
         { role: "system", content: autoReplyMessage },
@@ -26,7 +26,7 @@ let handler = async (m, { conn }) => {
         });
         const responseData = response.data;
         const hasil = responseData;
-        await conn.sendMessage(m.chat, `${botName}: ${hasil.answer}`);
+        await conn.sendMessage(m.chat, { text: `${botName}: ${hasil.answer}` });
     } catch (error) {
         console.error("Error fetching data:", error);
         throw error;
