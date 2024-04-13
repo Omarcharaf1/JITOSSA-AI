@@ -7,7 +7,7 @@ let handler = async (m, { conn }) => {
     if (!m.text || m.isBaileys || m.text.includes("http://") || m.text.includes("https://")) return;
 
     let name = "JITOSSA AI";
-    await conn.sendMessage(m.chat, { react: { text: `⏱️`, key: m.key }});
+   /* await conn.sendMessage(m.chat, { react: { text: `⏱️`, key: m.key }});*/
 
     const messages = [
         { role: "system", content: `أنا بوت واتساب، اسمي ${name}` },
@@ -20,7 +20,7 @@ let handler = async (m, { conn }) => {
         });
         const responseData = response.data;
         const hasil = responseData;
-        await conn.sendMessage(m.chat, { react: { text: `✅`, key: m.key }});
+      //  await conn.sendMessage(m.chat, { react: { text: `✅`, key: m.key }});
         m.reply(hasil.answer);
     } catch (error) {
         console.error("حدث خطأ أثناء جلب البيانات:", error);
@@ -35,7 +35,7 @@ handler.before = async (m, { conn }) => {
     if (!m.text || m.isBaileys || m.text.includes("http://") || m.text.includes("https://")) return;
 
     let name = "JITOSSA AI";
-    await conn.sendMessage(m.chat, { react: { text: `⏱️`, key: m.key }});
+  //  await conn.sendMessage(m.chat, { react: { text: `⏱️`, key: m.key }});
 
     const messages = [
         { role: "system", content: `أنا بوت واتساب، اسمي ${name}` },
@@ -48,7 +48,7 @@ handler.before = async (m, { conn }) => {
         });
         const responseData = response.data;
         const hasil = responseData;
-        await conn.sendMessage(m.chat, { react: { text: `✅`, key: m.key }});
+     //   await conn.sendMessage(m.chat, { react: { text: `✅`, key: m.key }});
         m.reply(hasil.answer);
     } catch (error) {
         console.error("حدث خطأ أثناء جلب البيانات:", error);
@@ -56,7 +56,7 @@ handler.before = async (m, { conn }) => {
     }
 }
 
-handler.command = ['autoai'];
+/*handler.command = ['autoai'];
 handler.tags = ["ai"]
 handler.help = ['autoai']
-export default handler;
+export default handler;*/
