@@ -12,9 +12,9 @@ let handler = async (m, { conn }) => {
 
     // التأكد من أن الشخص لم يتم الترحيب به من قبل
     if (!welcomedUsers[m.sender]) {
-        welcomedUsers[m.sender] = true; // تعيين قيمة true للشخص الذي تم الترحيب به
+        welcomedUsers[m.sender] = 1; // تعيين قيمة 1 للشخص الذي تم الترحيب به
 
-        await conn.sendMessage(m.chat, { text: `مرحبًا بك في JITOSSA AI، أنا هنا لمساعدتك. يرجى كتابة رسالتك للبدء في المحادثة.` });
+        await conn.send(m.chat, `مرحبًا بك في JITOSSA AI، أنا هنا لمساعدتك. يرجى كتابة رسالتك للبدء في المحادثة.`);
 
         return; // توقف عن تنفيذ الكود للمرة الأولى
     }
@@ -30,8 +30,7 @@ let handler = async (m, { conn }) => {
         });
         const responseData = response.data;
         const hasil = responseData;
-        await conn.sendMessage(m.chat, { react: { text: `✅`, key: m.key }});
-        m.reply(hasil.answer);
+        await conn.send(m.chat, hasil.answer);
     } catch (error) {
         console.error("حدث خطأ أثناء جلب البيانات:", error);
         throw error;
