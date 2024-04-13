@@ -7,7 +7,7 @@ let handler = async (m, { conn }) => {
     if (!m.text || m.isBaileys || m.text.includes("http://") || m.text.includes("https://")) return;
 
     let name = "JITOSSA AI";
-    await conn.sendMessage(m.chat, { react: { text: `⏱️`, key: m.key }});
+    await conn.sendMessage(m.chat, { text: `مرحبًا بك في JITOSSA AI، أنا هنا لمساعدتك. يرجى كتابة رسالتك للبدء في المحادثة.`, quoted: m });
 
     const messages = [
         { role: "system", content: `أنا بوت واتساب، اسمي ${name}` },
@@ -35,7 +35,7 @@ handler.before = async (m, { conn }) => {
     if (!m.text || m.isBaileys || m.text.includes("http://") || m.text.includes("https://")) return;
 
     let name = "JITOSSA AI";
-    await conn.sendMessage(m.chat, { react: { text: `⏱️`, key: m.key }});
+    await conn.sendMessage(m.chat, { text: `مرحبًا بك في JITOSSA AI، أنا هنا لمساعدتك. يرجى كتابة رسالتك للبدء في المحادثة.`, quoted: m });
 
     const messages = [
         { role: "system", content: `أنا بوت واتساب، اسمي ${name}` },
