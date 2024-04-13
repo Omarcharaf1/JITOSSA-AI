@@ -3,13 +3,20 @@ import axios from 'axios';
 let handler = async (m, { conn }) => {
     conn.autoai = conn.autoai ? conn.autoai : {};
 
-    if (!m.text || m.isBaileys) return;
+    if (!m.text || m.isBaileys || hasLinks(m.text)) return;
 
-    let name = conn.getName(m.sender);
-    await conn.sendMessage(m.chat, { react: { text: `⏱️`, key: m.key }});
+    let botName = 'JITOSSA AI';
+    const autoReplyMessage = `أنا ${botName}، مساعدك الافتراضي.`;
+
+    // قائمة الكلمات المحظورة
+    const bannedWords = ['spam', 'link', 'banned'];
+
+    if (containsBannedWords(m.text, bannedWords)) return;
+
+    await conn.sendMessage(m.chat, autoReplyMessage);
 
     const messages = [
-        { role: "system", content: `I am a WhatsApp bot, ${name}` },
+        { role: "system", content: autoReplyMessage },
         { role: "user", content: m.text }
     ];
 
@@ -19,40 +26,34 @@ let handler = async (m, { conn }) => {
         });
         const responseData = response.data;
         const hasil = responseData;
-        await conn.sendMessage(m.chat, { react: { text: `✅`, key: m.key }});
-        m.reply(hasil.answer);
+        await conn.sendMessage(m.chat, `${botName}: ${hasil.answer}`);
     } catch (error) {
         console.error("Error fetching data:", error);
         throw error;
     }
 }
 
-handler.before = async (m, { conn }) => {
-    if (!m.text || m.isBaileys) return;
+function hasLinks(text) {
+    const linkPattern = /https?:\/\/\S+/i;
+    return linkPattern.test(text);
+}
 
-    let name = conn.getName(m.sender);
-    await conn.sendMessage(m.chat, { react: { text: `⏱️`, key: m.key }});
-
-    const messages = [
-        { role: "system", content: `I am a WhatsApp bot, ${name}` },
-        { role: "user", content: m.text }
-    ];
-
-    try {
-        const response = await axios.post("https://deepenglish.com/wp-json/ai-chatbot/v1/chat", {
-            messages
-        });
-        const responseData = response.data;
-        const hasil = responseData;
-        await conn.sendMessage(m.chat, { react: { text: `✅`, key: m.key }});
-        m.reply(hasil.answer);
-    } catch (error) {
-        console.error("Error fetching data:", error);
-        throw error;
+function containsBannedWords(text, wordsList) {
+    const lowerCaseText = text.toLowerCase();
+    for (let word of wordsList) {
+        if (lowerCaseText.includes(word)) {
+            return true;
+        }
     }
+    return false;
+}
+
+handler.before = async (m, { conn }) => {
+    // لا تنفذ أي شيء قبل وصول الرسالة
 }
 
 handler.command = ['autoai'];
 handler.tags = ["ai"]
 handler.help = ['autoai']
+
 export default handler;
