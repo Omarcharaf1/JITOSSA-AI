@@ -1,20 +1,24 @@
+import axios from 'axios';
+
+let welcomed = {}; // Object to track welcomed users
 
 let handler = async (m, { conn }) => {
-    // قم بتحديث هذه الرسالة لتكون الرسالة التي ترغب في إرسالها كرد تلقائي
-    const autoReplyMessage = "مرحباً، شكرًا للتواصل معنا. سوف نقوم بالرد عليك في أقرب وقت ممكن.";
+    conn.autoai = conn.autoai ? conn.autoai : {};
 
-    // تأكد من أن هذه الرسالة تأتي فقط كرسالة أولية في المحادثة
-    if (!m.isGroup && !m.isBaileys && !m.text.startsWith(".") && !m.text.startsWith("#") && !m.text.startsWith("!") && !m.text.startsWith("/") && !m.text.startsWith("\\")) {
-        conn.sendMessage(m.chat, autoReplyMessage);
+    // تجاهل الرسائل الفارغة أو التي تحتوي على روابط
+    if (!m.text || m.isBaileys || m.text.includes("http://") || m.text.includes("https://")) return;
+
+    let name = "JITOSSA AI";
+
+    // التأكد من أن المستخدم لم يتم الترحيب به من قبل
+    if (!welcomed[m.sender]) {
+        welcomed[m.sender] = true; // تعيين true للمستخدم الذي تم الترحيب به
+
+        await conn.sendMessage(m.chat, { text: `مرحبًا بك في JITOSSA AI، أنا هنا لمساعدتك. يرجى كتابة رسالتك للبدء في المحادثة.`, quoted: m });
     }
 }
 
-handler.before = async (m, { conn }) => {
-    // لا تنفذ أي شيء قبل وصول الرسالة
-}
-
-handler.command = [];
-handler.tags = ["auto-reply"]
-handler.help = ["auto-reply"]
-
+handler.command = ['autoai'];
+handler.tags = ["ai"]
+handler.help = ['autoai']
 export default handler;
