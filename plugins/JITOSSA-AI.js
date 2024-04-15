@@ -1,110 +1,53 @@
-import axios from 'axios';
-import Jimp from 'jimp';
+import fetch from 'node-fetch'
+import axios from 'axios'
+import translate from '@vitalets/google-translate-api'
+import {Configuration, OpenAIApi} from 'openai'
 
-let handler = async (m, { conn }) => {
-    conn.autoai = conn.autoai ? conn.autoai : {};
+const configuration = new Configuration({organization: global.openai_org_id, apiKey: global.openai_key})
+const openaiii = new OpenAIApi(configuration)
 
-    // تجاهل الرسائل الفارغة أو التي تحتوي على روابط
-    if (!m.text || m.isBaileys || m.text.includes("http://") || m.text.includes("https://")) return;
+var handler = async (m, {conn, text, usedPrefix, command}) => {
+  
+if (usedPrefix == 'a' || usedPrefix == 'A') return
+if (!text) return conn.reply(m.chat, `*_ingresa un texto_*\n\n*ejemplo:* !${command} Codigo en JS para un juego de cartas`, m, ) 
+  
+try {
 
-    let name = "JITOSSA AI";
-    /* await conn.sendMessage(m.chat, { react: { text: `⏱️`, key: m.key }}); */
-
-    const messages = [
-        { role: "system", content: `أنا بوت واتساب، اسمي ${name}` },
-        { role: "user", content: m.text }
-    ];
-
-    try {
-        // الرد الاعتيادي
-        let replyMessage = "";
-        
-        // التحقق من السؤال عن صاحب الرقم
-        if (m.text.includes("صاحب الرقم") && m.text.includes("212670941551")) {
-            replyMessage = "رقم الهاتف يعود إلى صاحبه الفلاني";
-        } else {
-            // استعمال الذكاء الصناعي
-            const response = await axios.post("https://deepenglish.com/wp-json/ai-chatbot/v1/chat", {
-                messages
-            });
-            const responseData = response.data;
-            const hasil = responseData;
-            replyMessage = hasil.answer;
-        }
-
-        m.reply(replyMessage);
-
-        // قراءة الصور والفيديوهات وإنشاء الصور
-        if (m.hasMedia) {
-            const mediaData = await conn.downloadAndSaveMedia(m);
-            // استخدم mediaData لمعالجة الصورة
-        }
-
-        if (m.hasVideo) {
-            const videoData = await conn.downloadAndSaveMedia(m);
-            // استخدم videoData لمعالجة الفيديو
-        }
-
-        const image = await Jimp.read("https://example.com/image.jpg");
-        // قم بمعالجة الصورة كما تحتاج
-
-    } catch (error) {
-        console.error("حدث خطأ أثناء جلب البيانات:", error);
-        throw error;
-    }
+conn.sendPresenceUpdate('composing', m.chat)
+let sistema1 = `Actuaras como un Bot de WhatsApp el cual fue creado por the monster, tu seras INABAKUMORI`
+async function getOpenAIChatCompletion(texto) {
+const openaiAPIKey = global.openai_key
+let chgptdb = global.chatgpt.data.users[m.sender]
+chgptdb.push({ role: 'user', content: texto })
+let url = 'https://api.openai.com/v1/chat/completions'
+let headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${openaiAPIKey}` }
+let data = { 'model': 'gpt-3.5-turbo', 'messages': [{ 'role': 'system', 'content': sistema1 }, ...chgptdb, ]}
+let response = await fetch(url, {method: 'POST', headers: headers, body: JSON.stringify(data)})
+let result = await response.json()
+let finalResponse = result.choices[0].message.content
+return finalResponse
 }
+let respuesta = await getOpenAIChatCompletion(text)
+if (respuesta == 'error' || respuesta == '' || !respuesta) return XD // causar error undefined para usar otra api
+conn.reply(m.chat, `${respuesta}`, m, fake, )
+} catch {
+try {
+let botIA222 = await openaiii.createCompletion({model: 'text-davinci-003', prompt: text, temperature: 0.3, max_tokens: 4097, stop: ['Ai:', 'Human:'], top_p: 1, frequency_penalty: 0.2, presence_penalty: 0})
+if (botIA222.data.choices[0].text == 'error' || botIA222.data.choices[0].text == '' || !botIA222.data.choices[0].text) return XD // causar error undefined para usar otra api
+conn.reply(m.chat, botIA222.data.choices[0].text, m, fake, )
+} catch {
+try {
+let syms1 = `Actuaras como un Bot de WhatsApp el cual fue creado por the monster, tu seras INABAKUMORI`
+let Empireapi1 = await fetch(`https://api.cafirexos.com/api/chatgpt?text=${text}&name=${m.name}&prompt=${syms1}`)
+let empireApijson1 = await Empireapi1.json();
+if (empireApijson1.resultado == 'error' || empireApijson1.resultado == '' || !empireApijson1.resultado) return XD // causar error undefined para lanzar msg de error
+conn.reply(m.chat, `${empireApijson1.resultado}`, m, fake, )
+} catch {
+}}}
 
-handler.before = async (m, { conn }) => {
-    conn.autoai = conn.autoai ? conn.autoai : {};
-
-    // تجاهل الرسائل الفارغة أو التي تحتوي على روابط
-    if (!m.text || m.isBaileys || m.text.includes("http://") || m.text.includes("https://")) return;
-
-    let name = "JITOSSA AI";
-    // await conn.sendMessage(m.chat, { react: { text: `⏱️`, key: m.key }});
-
-    const messages = [
-        { role: "system", content: `أنا بوت واتساب، اسمي ${name}` },
-        { role: "user", content: m.text }
-    ];
-
-    try {
-        // الرد الاعتيادي
-        let replyMessage = "";
-        
-        // التحقق من السؤال عن صاحب الرقم
-        if (m.text.includes("صاحب الرقم") && m.text.includes("212670941551")) {
-            replyMessage = "رقم الهاتف يعود إلى صاحبه الفلاني";
-        } else {
-            // استعمال الذكاء الصناعي
-            const response = await axios.post("https://deepenglish.com/wp-json/ai-chatbot/v1/chat", {
-                messages
-            });
-            const responseData = response.data;
-            const hasil = responseData;
-            replyMessage = hasil.answer;
-        }
-
-        m.reply(replyMessage);
-
-        // قراءة الصور والفيديوهات وإنشاء الصور
-        if (m.hasMedia) {
-            const mediaData = await conn.downloadAndSaveMedia(m);
-            // استخدم mediaData لمعالجة الصورة
-        }
-
-        if (m.hasVideo) {
-            const videoData = await conn.downloadAndSaveMedia(m);
-            // استخدم videoData لمعالجة الفيديو
-        }
-
-        const image = await Jimp.read("https://example.com/image.jpg");
-        // قم بمعالجة الصورة كما تحتاج
-
-    } catch (error) {
-        console.error("حدث خطأ أثناء جلب البيانات:", error);
-        throw error;
-    }
 }
+handler.help = ['chatgpt']
+handler.tags = ['ia']
+handler.command = /^(openai|chatgpt|ia)$/i
 
-export default handler;
+export default handler
